@@ -10,10 +10,12 @@
             --primary-color: #e74c3c;
             --secondary-color: #2c3e50;
         }
+
         body {
             background: #f8f9fa;
             padding: 2rem 0;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -22,26 +24,43 @@
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             text-align: center;
             margin-bottom: 2rem;
         }
+
         .logo {
             max-width: 200px;
             margin-bottom: 1.5rem;
         }
+
         h1 {
             color: var(--primary-color);
             margin-bottom: 0.5rem;
         }
+
         .required {
             color: var(--primary-color);
         }
-        .hidden {
-            display: none;
+
+        .timeslots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
         }
-        .timeslot-group {
-            margin: 1rem 0 2rem 0;
+
+        .timeslots label {
+            width: calc(50% - 1rem);
+        }
+
+        .day-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .slots-container {
+            margin-top: 0.5rem;
+            display: none;
         }
     </style>
 </head>
@@ -64,7 +83,7 @@
         <input type="tel" id="phone" name="phone">
 
         <label for="age">Age <span class="required">*</span></label>
-        <input type="number" id="age" name="age" min="12" max="50" required>
+        <input type="number" id="age" name="age" min="8" max="18" required>
 
         <label for="sport">Primary Sport <span class="required">*</span></label>
         <select id="sport" name="sport" required>
@@ -81,22 +100,40 @@
         <label><input type="checkbox" name="goals" value="speed"> Speed Improvement</label>
         <label><input type="checkbox" name="goals" value="endurance"> Endurance Training</label>
         <label><input type="checkbox" name="goals" value="injury"> Injury Prevention</label>
-        <label for="goalDetails">Other goals or specifics</label>
-        <textarea id="goalDetails" name="goalDetails" rows="2" placeholder="e.g. Position-specific training, mental focus..."></textarea>
+        <input type="text" name="goals_details" placeholder="Other or more details...">
 
-        <label>Preferred Session Times <span class="required">*</span></label>
-        <p>Select a day to see available time slots:</p>
-        <div>
-            <label><input type="checkbox" class="day-toggle" value="monday"> Monday</label>
-            <label><input type="checkbox" class="day-toggle" value="tuesday"> Tuesday</label>
-            <label><input type="checkbox" class="day-toggle" value="wednesday"> Wednesday</label>
-            <label><input type="checkbox" class="day-toggle" value="thursday"> Thursday</label>
-            <label><input type="checkbox" class="day-toggle" value="friday"> Friday</label>
-            <label><input type="checkbox" class="day-toggle" value="saturday"> Saturday</label>
-            <label><input type="checkbox" class="day-toggle" value="sunday"> Sunday</label>
+        <label>Preferred Session Days & Times <span class="required">*</span></label>
+
+        <div id="days">
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Monday" onchange="toggleSlots('Monday')"> Monday</label>
+                <div id="slots-Monday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Tuesday" onchange="toggleSlots('Tuesday')"> Tuesday</label>
+                <div id="slots-Tuesday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Wednesday" onchange="toggleSlots('Wednesday')"> Wednesday</label>
+                <div id="slots-Wednesday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Thursday" onchange="toggleSlots('Thursday')"> Thursday</label>
+                <div id="slots-Thursday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Friday" onchange="toggleSlots('Friday')"> Friday</label>
+                <div id="slots-Friday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Saturday" onchange="toggleSlots('Saturday')"> Saturday</label>
+                <div id="slots-Saturday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Sunday" onchange="toggleSlots('Sunday')"> Sunday</label>
+                <div id="slots-Sunday" class="slots-container timeslots"></div>
+            </div>
         </div>
-
-        <div id="timeslot-sections"></div>
 
         <label for="message">Additional Information</label>
         <textarea id="message" name="message" rows="3" placeholder="Any injuries, special requirements, or questions..."></textarea>
@@ -106,48 +143,51 @@
 </div>
 
 <script>
-    const timeSlots = [
-        "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30",
-        "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30"
-    ];
+    const excludedWeekdayTimes = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"];
 
-    const fullSlots = [
-        "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30",
-        "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30",
-        "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30",
-        "20:00", "20:30"
-    ];
+    function generateTimeSlots(day) {
+        const container = document.getElementById(`slots-${day}`);
+        container.innerHTML = "";
+        const start = new Date();
+        start.setHours(6, 30, 0, 0);
 
-    const weekday = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-    const weekend = ["saturday", "sunday"];
+        for (let i = 0; i < 20; i++) {
+            const end = new Date(start.getTime() + 90 * 60000);
+            const label = `${formatTime(start)} to ${formatTime(end)}`;
+            const startStr = formatTime(start);
+            if (!(isWeekday(day) && excludedWeekdayTimes.includes(startStr))) {
+                const input = document.createElement("input");
+                input.type = "checkbox";
+                input.name = `${day}-timeslot`;
+                input.value = label;
 
-    const timeslotSections = document.getElementById("timeslot-sections");
-    document.querySelectorAll(".day-toggle").forEach(toggle => {
-        toggle.addEventListener("change", () => {
-            const day = toggle.value;
-            let container = document.getElementById(`times-${day}`);
+                const lbl = document.createElement("label");
+                lbl.appendChild(input);
+                lbl.appendChild(document.createTextNode(" " + label));
 
-            if (toggle.checked) {
-                if (!container) {
-                    container = document.createElement("div");
-                    container.classList.add("timeslot-group");
-                    container.id = `times-${day}`;
-                    container.innerHTML = `<strong>${day.charAt(0).toUpperCase() + day.slice(1)}:</strong><div id="slot-${day}"></div>`;
-                    timeslotSections.appendChild(container);
-
-                    const slotWrapper = document.getElementById(`slot-${day}`);
-                    const slots = (weekend.includes(day)) ? fullSlots : timeSlots;
-                    slots.forEach(time => {
-                        const label = document.createElement("label");
-                        label.innerHTML = `<input type='checkbox' name='timeslot_${day}[]' value='${day} ${time}'> ${time}`;
-                        slotWrapper.appendChild(label);
-                    });
-                }
-            } else {
-                if (container) container.remove();
+                container.appendChild(lbl);
             }
-        });
-    });
+            start.setMinutes(start.getMinutes() + 120); // 90 min session + 30 min break = 120 min total
+        }
+    }
+
+    function formatTime(date) {
+        return date.toTimeString().slice(0, 5);
+    }
+
+    function toggleSlots(day) {
+        const container = document.getElementById(`slots-${day}`);
+        if (container.style.display === "none" || container.innerHTML === "") {
+            container.style.display = "flex";
+            generateTimeSlots(day);
+        } else {
+            container.style.display = "none";
+        }
+    }
+
+    function isWeekday(day) {
+        return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].includes(day);
+    }
 </script>
 </body>
 </html>

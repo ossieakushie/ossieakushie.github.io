@@ -10,120 +10,160 @@
             --primary-color: #e74c3c;
             --secondary-color: #2c3e50;
         }
-        
+
         body {
             background: #f8f9fa;
-            padding:2rem 0;
+            padding: 2rem 0;
         }
-        
+
         .container {
             max-width: 800px;
-            margin:0 auto;
+            margin: 0 auto;
             background: white;
             padding: 3rem;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 2rem;
         }
-        
+
         .logo {
             max-width: 200px;
             margin-bottom: 1.5rem;
         }
-        
+
         h1 {
             color: var(--primary-color);
             margin-bottom: 0.5rem;
         }
-        
+
         .required {
             color: var(--primary-color);
         }
-        
-        .sport-icon {
-            font-size: 2.5rem;
-            margin: 1rem 0;
+
+        .slot-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .slot {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="images/logo.png" alt="Match-Fit Ballers Logo" class="logo">
-            <h1>New Client Registration</h1>
-            <p>Please fill out this form to schedule your performance consultation</p>
+<div class="container">
+    <div class="header">
+        <img src="images/logo.png" alt="Match-Fit Ballers Logo" class="logo">
+        <h1>New Client Registration</h1>
+        <p>Please fill out this form to schedule your performance consultation</p>
+    </div>
+
+    <form action="https://formspree.io/f/xgvkvzdp" method="POST">
+        <div class="row">
+            <div class="column">
+                <label for="name">Full Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required>
+            </div>
         </div>
 
-        <form action="https://formspree.io/f/xgvkvzdp" method="POST">
-            <div class="row">
-                <div class="column">
-                    <label for="name">Full Name <span class="required">*</span></label>
-                    <input type="text" id="name" name="name" required>
+        <div class="row">
+            <div class="column">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="column">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="column">
+                <label for="age">Age <span class="required">*</span></label>
+                <input type="number" id="age" name="age" min="12" max="50" required>
+            </div>
+            <div class="column">
+                <label for="sport">Primary Sport <span class="required">*</span></label>
+                <select id="sport" name="sport" required>
+                    <option value="">Select Sport</option>
+                    <option>Football</option>
+                    <option>Rugby</option>
+                    <option>Athletics</option>
+                    <option>Basketball</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="column">
+                <label>What are your main goals? <span class="required">*</span></label>
+                <label><input type="checkbox" name="goals" value="strength"> Strength Building</label>
+                <label><input type="checkbox" name="goals" value="speed"> Speed Improvement</label>
+                <label><input type="checkbox" name="goals" value="endurance"> Endurance Training</label>
+                <label><input type="checkbox" name="goals" value="injury"> Injury Prevention</label>
+                <label for="goalDetails">Other / Specific Goals:</label>
+                <textarea id="goalDetails" name="goalDetails" rows="2" placeholder="Describe your specific goals..."></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="column">
+                <label>Preferred Session Times <span class="required">*</span></label>
+                <div class="slot-grid">
+                    <!-- JavaScript will populate this -->
                 </div>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="column">
-                    <label for="email">Email <span class="required">*</span></label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="column">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone">
-                </div>
+        <div class="row">
+            <div class="column">
+                <label for="message">Additional Information</label>
+                <textarea id="message" name="message" rows="3" placeholder="Any injuries, special requirements, or questions..."></textarea>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="column">
-                    <label for="age">Age <span class="required">*</span></label>
-                    <input type="number" id="age" name="age" min="12" max="50" required>
-                </div>
-                <div class="column">
-                    <label for="sport">Primary Sport <span class="required">*</span></label>
-                    <select id="sport" name="sport" required>
-                        <option value="">Select Sport</option>
-                        <option>Football</option>
-                        <option>Rugby</option>
-                        <option>Athletics</option>
-                        <option>Basketball</option>
-                        <option>Other</option>
-                    </select>
-                </div>
-            </div>
+        <button type="submit" class="button button-primary">Submit Application</button>
+    </form>
+</div>
 
-            <div class="row">
-                <div class="column">
-                    <label>What are your main goals? <span class="required">*</span></label>
-                    <label><input type="checkbox" name="goals" value="strength"> Strength Building</label>
-                    <label><input type="checkbox" name="goals" value="speed"> Speed Improvement</label>
-                    <label><input type="checkbox" name="goals" value="endurance"> Endurance Training</label>
-                    <label><input type="checkbox" name="goals" value="injury"> Injury Prevention</label>
-                </div>
-            </div>
+<script>
+    const slotGrid = document.querySelector('.slot-grid');
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-            <div class="row">
-                <div class="column">
-                    <label for="availability">Preferred Session Times <span class="required">*</span></label>
-                    <textarea id="availability" name="availability" rows="3" required 
-                        placeholder="e.g. Weekday evenings, Saturday mornings..."></textarea>
-                </div>
-            </div>
+    days.forEach(day => {
+        let startHour = 6;
+        let endHour = 21;
 
-            <div class="row">
-                <div class="column">
-                    <label for="message">Additional Information</label>
-                    <textarea id="message" name="message" rows="3" 
-                        placeholder="Any injuries, special requirements, or questions..."></textarea>
-                </div>
-            </div>
+        for (let hour = startHour; hour + 1.5 <= endHour; hour += 0.5) {
+            const start = `${String(Math.floor(hour)).padStart(2, '0')}:${(hour % 1) ? '30' : '00'}`;
+            const endH = hour + 1.5;
+            const end = `${String(Math.floor(endH)).padStart(2, '0')}:${(endH % 1.5 !== 0) ? '30' : '00'}`;
 
-            <button type="submit" class="button button-primary">Submit Application</button>
-        </form>
-    </div>
+            const isWeekday = days.indexOf(day) < 5;
+            const inBlockedRange = isWeekday && hour >= 10 && hour < 17.5;
+
+            if (!inBlockedRange) {
+                const slotLabel = document.createElement('label');
+                slotLabel.classList.add('slot');
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.name = 'availability[]';
+                input.value = `${day} ${start}-${end}`;
+                slotLabel.appendChild(input);
+                slotLabel.appendChild(document.createTextNode(`${day} ${start}-${end}`));
+                slotGrid.appendChild(slotLabel);
+            }
+        }
+    });
+</script>
 </body>
 </html>
-

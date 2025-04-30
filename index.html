@@ -96,12 +96,13 @@
         </select>
 
         <label>What are your main goals? <span class="required">*</span></label>
-        <label><input type="checkbox" name="goals" value="strength"> Strength Building</label>
-        <label><input type="checkbox" name="goals" value="speed"> Speed Improvement</label>
-        <label><input type="checkbox" name="goals" value="endurance"> Endurance Training</label>
-        <label><input type="checkbox" name="goals" value="injury"> Injury Prevention</label>
+        <label><input type="checkbox" name="goals" value="Strength Building"> Strength Building</label>
+        <label><input type="checkbox" name="goals" value="Speed Improvement"> Speed Improvement</label>
+        <label><input type="checkbox" name="goals" value="Endurance Training"> Endurance Training</label>
+        <label><input type="checkbox" name="goals" value="Injury Prevention"> Injury Prevention</label>
+		<label><input type="checkbox" name="goals" value="Attacking"> Attacking</label>
+        <label><input type="checkbox" name="goals" value="Defending"> Defending</label>
         <input type="text" name="goals_details" placeholder="Other or more details...">
-
         <label>Preferred Session Days & Times <span class="required">*</span></label>
 
         <div id="days">
@@ -144,21 +145,21 @@
 
 <script>
     const weekdaySlots = [
-        "06:30 to 08:00",
-        "08:30 to 10:00",
-        "18:30 to 20:00",
-        "20:30 to 22:00"
+        "06:30 to 08:00 am",
+        "08:30 to 10:00 am",
+        "18:30 to 20:00 pm",
+        "20:30 to 22:00 pm"
     ];
 
     const weekendSlots = [
-        "06:30 to 08:00",
-        "08:30 to 10:00",
-        "10:30 to 12:00",
-        "12:30 to 14:00",
-        "14:30 to 16:00",
-        "16:30 to 18:00",
-        "18:30 to 20:00",
-        "20:30 to 22:00"
+        "06:30 to 08:00 am",
+        "08:30 to 10:00 am",
+        "10:30 to 12:00 md",
+        "12:30 to 14:00 pm",
+        "14:30 to 16:00 pm",
+        "16:30 to 18:00 pm",
+        "18:30 to 20:00 pm",
+        "20:30 to 22:00 pm"
     ];
 
     function generateTimeSlots(day) {

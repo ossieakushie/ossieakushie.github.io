@@ -73,7 +73,13 @@
     </div>
 
     <form action="https://formspree.io/f/xgvkvzdp" method="POST">
-        <label for="name">Full Name <span class="required">*</span></label>
+        <label for="name">Player's Name <span class="required">*</span></label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="Player's age">Age <span class="required">*</span></label>
+        <input type="number" id="age" name="age" min="8" max="18" required>
+
+        <label for="name">Parent/Guardian's Name <span class="required">*</span></label>
         <input type="text" id="name" name="name" required>
 
         <label for="email">Email <span class="required">*</span></label>
@@ -81,9 +87,6 @@
 
         <label for="phone">Phone Number</label>
         <input type="tel" id="phone" name="phone">
-
-        <label for="age">Age <span class="required">*</span></label>
-        <input type="number" id="age" name="age" min="8" max="18" required>
 
         <label for="sport">Primary Sport <span class="required">*</span></label>
         <select id="sport" name="sport" required>
@@ -104,7 +107,7 @@
         <label><input type="checkbox" name="goals" value="Defending"> Defending</label>
         <input type="text" name="goals_details" placeholder="Other or more details...">
         <label>Preferred Session Days & Times <span class="required">*</span></label>
-
+        <p>Performance sessions will run in the 2025 Schools summer break between Saturday 12 July - Sunday 12 August </p>
         <div id="days">
             <div class="day-group">
                 <label><input type="checkbox" name="days" value="Monday" onchange="toggleSlots('Monday')"> Monday</label>

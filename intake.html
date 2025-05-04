@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match-Fit Ballers - Client Intake Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>a
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #2c3e50;
+        }
+
+        body {
+            background: #e8f2e3;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .required {
+            color: var(--primary-color);
+        }
+
+        .timeslots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+
+        .timeslots label {
+            width: calc(50% - 1rem);
+        }
+
+        .day-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .slots-container {
+            margin-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="images/logo.png" alt="Match-Fit Ballers Logo" class="logo">
+        <h1>Register Your Interest</h1>
+        <p>Submit your availability and goals below — The personal coach will be in touch to arrange a suitable consultation session.</p>
+    </div>
+
+    <form action="https://formspree.io/f/xgvkvzdp" method="POST">
+        <label for="name">Player's Name <span class="required">*</span></label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="Player's age">Age <span class="required">*</span></label>
+        <input type="number" id="age" name="age" min="8" max="18" required>
+
+        <label for="name">Parent/Guardian's Name <span class="required">*</span></label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone">
+
+        <label for="sport">Primary Sport <span class="required">*</span></label>
+        <select id="sport" name="sport" required>
+            <option value="">Select Sport</option>
+            <option>Football</option>
+            <option>Rugby</option>
+            <option>Athletics</option>
+            <option>Basketball</option>
+            <option>Other</option>
+        </select>
+
+        <label>What are your main goals? <span class="required">*</span></label>
+        <label><input type="checkbox" name="goals" value="Strength Building"> Strength Building</label>
+        <label><input type="checkbox" name="goals" value="Speed Improvement"> Speed Improvement</label>
+        <label><input type="checkbox" name="goals" value="Endurance Training"> Endurance Training</label>
+        <label><input type="checkbox" name="goals" value="Injury Prevention"> Injury Prevention</label>
+		<label><input type="checkbox" name="goals" value="Attacking"> Attacking</label>
+        <label><input type="checkbox" name="goals" value="Defending"> Defending</label>
+        <input type="text" name="goals_details" placeholder="Other or more details...">
+        <label>Preferred Session Days & Times <span class="required">*</span></label>
+        <p>Performance sessions will run in the 2025 Schools summer break between Saturday 12 July - Sunday 12 August </p>
+        <div id="days">
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Monday" onchange="toggleSlots('Monday')"> Monday</label>
+                <div id="slots-Monday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Tuesday" onchange="toggleSlots('Tuesday')"> Tuesday</label>
+                <div id="slots-Tuesday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Wednesday" onchange="toggleSlots('Wednesday')"> Wednesday</label>
+                <div id="slots-Wednesday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Thursday" onchange="toggleSlots('Thursday')"> Thursday</label>
+                <div id="slots-Thursday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Friday" onchange="toggleSlots('Friday')"> Friday</label>
+                <div id="slots-Friday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Saturday" onchange="toggleSlots('Saturday')"> Saturday</label>
+                <div id="slots-Saturday" class="slots-container timeslots"></div>
+            </div>
+            <div class="day-group">
+                <label><input type="checkbox" name="days" value="Sunday" onchange="toggleSlots('Sunday')"> Sunday</label>
+                <div id="slots-Sunday" class="slots-container timeslots"></div>
+            </div>
+        </div>
+
+        <label for="message">Additional Information</label>
+        <textarea id="message" name="message" rows="3" placeholder="Any injuries, special requirements, or questions..."></textarea>
+
+        <button type="submit" class="button button-primary">Submit Application</button>
+    </form>
+</div>
+
+<script>
+    const weekdaySlots = [
+        "06:30 to 08:00 am",
+        "08:30 to 10:00 am",
+        "18:30 to 20:00 pm",
+        "20:30 to 22:00 pm"
+    ];
+
+    const weekendSlots = [
+        "06:30 to 08:00 am",
+        "08:30 to 10:00 am",
+        "10:30 to 12:00 md",
+        "12:30 to 14:00 pm",
+        "14:30 to 16:00 pm",
+        "16:30 to 18:00 pm",
+        "18:30 to 20:00 pm",
+        "20:30 to 22:00 pm"
+    ];
+
+    function generateTimeSlots(day) {
+        const container = document.getElementById(`slots-${day}`);
+        container.innerHTML = "";
+
+        const slots = isWeekday(day) ? weekdaySlots : weekendSlots;
+
+        slots.forEach(slot => {
+            const input = document.createElement("input");
+            input.type = "checkbox";
+            input.name = `${day}-timeslot`;
+            input.value = slot;
+
+            const lbl = document.createElement("label");
+            lbl.appendChild(input);
+            lbl.appendChild(document.createTextNode(" " + slot));
+
+            container.appendChild(lbl);
+        });
+    }
+
+    function toggleSlots(day) {
+        const container = document.getElementById(`slots-${day}`);
+        if (container.style.display === "none" || container.innerHTML === "") {
+            container.style.display = "flex";
+            generateTimeSlots(day);
+        } else {
+            container.style.display = "none";
+        }
+    }
+
+    function isWeekday(day) {
+        return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].includes(day);
+    }
+</script>
+</body>
+</html>

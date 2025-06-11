@@ -94,19 +94,8 @@
         <div class="flex flex-col md:flex-row items-center">
 <!-- Coach's Image Slideshow -->
 <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
-    <div class="slideshow-container rounded-lg overflow-hidden h-112 w-full flex items-center justify-center relative">
-        <div class="mySlides fade">
-            <img src="images/ossie_galaxyai_1.png" alt="Coach Ossie 1" class="slideshow-image">
-        </div>
-        <div class="mySlides fade">
-            <img src="images/ossie_galaxyai_2.png" alt="Coach Ossie 2" class="slideshow-image">
-        </div>
-        <div class="mySlides fade">
-            <img src="images/ossie_galaxyai_3.png" alt="Coach Ossie 3" class="slideshow-image">
-        </div>
-        <div class="mySlides fade">
-            <img src="images/ossie_galaxyai_4.png" alt="Coach Ossie 4" class="slideshow-image">
-        </div>
+    <div class="slideshow-container rounded-lg overflow-hidden h-112 w-full flex items-center justify-center relative" id="slideshow">
+        <!-- Slides will be injected here by JavaScript -->
     </div>
 </div>
 
@@ -134,21 +123,40 @@
 </style>
 
 <script>
+    const imageFilenames = [
+        "ossie_galaxyai_1.png",
+        "ossie_galaxyai_2.png",
+        "ossie_galaxyai_3.png",
+        "ossie_galaxyai_4.png"
+	"ossie_1.png",
+        "ossie_2.png"
+        // Add more here manually or via script
+    ];
+
+    const slideshowContainer = document.getElementById("slideshow");
+
+    imageFilenames.forEach((filename, index) => {
+        const slideDiv = document.createElement("div");
+        slideDiv.className = "mySlides fade";
+        slideDiv.innerHTML = `<img src="images/coach/${filename}" alt="Coach ${index + 1}" class="slideshow-image">`;
+        slideshowContainer.appendChild(slideDiv);
+    });
+
     let slideIndex = 0;
     showSlides();
 
     function showSlides() {
-        let i;
         let slides = document.getElementsByClassName("mySlides");
-        for (i = 0; i < slides.length; i++) {
+        for (let i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";  
         }
         slideIndex++;
-        if (slideIndex > slides.length) {slideIndex = 1}    
-        slides[slideIndex-1].style.display = "block";  
-        setTimeout(showSlides, 3000); // Change image every 3 seconds
+        if (slideIndex > slides.length) { slideIndex = 1 }    
+        slides[slideIndex - 1].style.display = "block";  
+        setTimeout(showSlides, 3000); // Change every 3 seconds
     }
 </script>
+
             <!-- Description -->
             <div class="md:w-1/2">
                 <h3 class="text-3xl font-bold mb-6">Professional Football Performance Coach</h3>
